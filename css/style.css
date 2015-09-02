@@ -1,0 +1,26 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:400,700);
+
+html {
+	font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-family: 'Montserrat', sans-serif;
+	line-height: 1.6em;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+
+.container {
+  width: 700px;
+  margin: auto; }
+
+.post {
+  margin: 25px 0; }
