@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php 
+	require_once($_SERVER["DOCUMENT_ROOT"].'feather/scripts/php/functions.php'); 
+	appendLog(true, "Navigated to post.php");
+?>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -12,12 +16,11 @@
 	
 			<?php
 
-			require_once('scripts/functions.php');
 			$post = get_post();
 
 			if($post){
 				echo '<div class="post">' .
-					 	'<h2><a href="post.php?post_id=' . $post['post_id'] . '">' . $post['title'] . '</a></h2>' .
+					 	'<h2> '. $post['title'] . '</h2>' .
 				     	'<span class="publish-date">' . $post['publish_date'] . '</span>' .
 				     	'<p class="post-content">' . $post['content'] . '</p>' .
 				     '</div>';
