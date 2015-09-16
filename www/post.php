@@ -1,14 +1,8 @@
-<!DOCTYPE html>
 <?php 
-	require_once($_SERVER["DOCUMENT_ROOT"].'feather/scripts/php/functions.php'); 
+	require_once($_SERVER["DOCUMENT_ROOT"].'feather/www/scripts/php/functions.php'); 
 	appendLog(true, "Navigated to post.php");
+	require_once("html_head.php");
 ?>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Blog</title>
-	<link rel="stylesheet" href="css/style.css">
-</head>
 <body>
 	
 	<div class="container">

@@ -46,7 +46,7 @@ function appendLog($success, $text){
 		$prefix ="[ERROR]";
 	};
 
-	$file = $_SERVER["DOCUMENT_ROOT"]."feather/php_log.txt";
+	$file = $_SERVER["DOCUMENT_ROOT"]."feather/www/php_log.txt";
 	$time = date('m-d-y H:i:s');
 	$textToLog = $prefix. "[" .$time. "] " .$text. ";\r\n"; 
 	file_put_contents($file, $textToLog, FILE_APPEND | LOCK_EX);
@@ -55,30 +55,41 @@ function appendLog($success, $text){
 
 function get_post_info(){
 // Retrieves all posts from the database and returns them as an array.
-// If there is no response from the database, returns false and logs
+// If no results are returned from the database, returns false and logs
 // out the error message.
 
 	global $db_connection;
 
 	// Define our MySQL query
-	$query = 'SELECT * FROM posts';
+	$query = "SELECT
+	 			title,
+	 			publish_date,
+	 			content summary,
+	 			post_id,
+	 			author_id
+	 		  FROM 
+	 		  	posts";
 
-	// Make a query Store our response from the database
-	$response = @mysqli_query($db_connection, $query);
+	// Make a query Store our results from the database
+	$results = @mysqli_query($db_connection, $query);
 
-	// If we get a response from our databse
-	if($response){
+	// If we get any results from our databse
+	if($results){
 		$posts = array();
 
-		while($post = mysqli_fetch_array($response)){
+		// mysqli_fetch_array() returns one row from the table at a time
+		// While there are rows of data left in our table, assign them to 
+		// $post and add them into $posts
+		while($post = mysqli_fetch_array($results)){
 			array_push($posts, $post);
 		};
 
 		mysqli_close($db_connection);
 		return $posts;
 
-	// If we don't get a response
+	// If we don't get any results
 	} else {
+		mysqli_close($db_connection);
 		appendLog(false, "Could not connect to database - " . mysqli_error($db_connection)); 
 		return false;
 	};
@@ -88,7 +99,7 @@ function get_post_info(){
 
 function get_post(){
 // Retrieves the post details using the given post ID in the GET array.
-// If there is no response from the database, returns false and logs
+// If no results are returned from the database, returns false and logs
 // out the error message.
 
 	global $db_connection;
@@ -97,16 +108,16 @@ function get_post(){
 	// Define our MySQL query
 	$query = 'SELECT * FROM posts WHERE post_id = ' . $postID . ' limit 1';
 
-	// Make a query and store the response from the database
-	$response = @mysqli_query($db_connection, $query);
+	// Make a query and store the results from the database
+	$results = @mysqli_query($db_connection, $query);
 
-	// If we get a response from our databse return post details in an array
-	if($response){
-		$post = mysqli_fetch_array($response);
+	// If we get any results from our database return post details in an array
+	if($results){
+		$post = mysqli_fetch_array($results);
 		mysqli_close($db_connection);
 		return $post;
 
-	// If we don't get a response return false
+	// If we don't get any results return false
 	} else {
 		appendLog(false, "Could not connect to database - " .
 		     mysqli_error($db_connection));
@@ -125,8 +136,8 @@ function submit_post(){
 	   (!empty($_POST["post_title"]) && !empty($_POST["post_content"]))){
 
 		global $db_connection;
-		$post_title = $_POST["post_title"];
-		$post_content = $_POST["post_content"];
+		$post_title = mysqli_real_escape_string($_POST["post_title"]);
+		$post_content = mysqli_real_escape_string($_POST["post_content"]);
 
 		$query = "INSERT INTO posts VALUES (
 				  '$post_title' ,
@@ -137,9 +148,9 @@ function submit_post(){
 				  null,
 				  1);";
 
-		$response = @mysqli_query($db_connection, $query);
+		$result = @mysqli_query($db_connection, $query);
 
-		if($response){
+		if($result){
 			mysqli_close($db_connection);
 			appendLog(true, "Post Created! Title: " .$post_title);
 		} else {
