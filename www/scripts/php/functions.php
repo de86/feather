@@ -68,7 +68,10 @@ function get_post_info(){
 	 			post_id,
 	 			author_id
 	 		  FROM 
-	 		  	posts";
+	 		  	posts
+	 		  ORDER BY
+	 		  	publish_date desc
+	 		  limit 5";
 
 	// Make a query Store our results from the database
 	$results = @mysqli_query($db_connection, $query);

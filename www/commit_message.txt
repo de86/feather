@@ -1,8 +1,1 @@
-Created the create a post page create_post.php;
-Created appendLog() to log information to php_log;
-Re-ordered file structure for scripts;
-Fixed submit post bug;
-Fixed post header no longer a link to itself;
-
-ToDo: Make site secure against SQL injection and similar vulnerabilities;
-ToDo: Create Login System;
+Added order by and limit to the get_posts() sql query
